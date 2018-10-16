@@ -1,16 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class CityGenWindow : MonoBehaviour {
+public class CityGenWindow : EditorWindow
+{
+	[MenuItem("Window/City Gen")]
+    static void Init()
+    {
+        // Get existing open window or if none, make a new one:
+        EditorWindow.GetWindow<CityGenWindow>().Show();
+    }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private void OnGUI()
+    {
+        //
+    }
+
+    private void MakeCitySelectionMenu()
+    {
+        //
+    }
+
+    private void MakeCityAssetsManager()
+    {
+        //
+    }
+
+    private void MakeCityScenePreview()
+    {
+        //
+    }
+
+    private void MakeCitySettings()
+    {
+        //
+    }
 }
