@@ -87,3 +87,15 @@ public class CityGenWindow : EditorWindow
         GUILayout.EndArea();
     }
 }
+
+/*public class LayoutOrganizer
+{
+    Dictionary<int, Section> sections = new Dictionary<int, Section>();
+
+    public void AddSection(Vector2 sizePercent);
+}
+
+public class Section
+{
+    public Vector2 sizePercentage;
+}*/
