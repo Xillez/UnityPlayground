@@ -88,6 +88,12 @@ public class CityGenWindow : EditorWindow
     }
 }
 
+/*
+TODO: 
+ - Make SectionManager (manaes the different sections with ids and sections)
+ - Make Sections (relative window-size in percentage and content (lambd / void function))
+*/
+
 /*public class LayoutOrganizer
 {
     Dictionary<int, Section> sections = new Dictionary<int, Section>();
