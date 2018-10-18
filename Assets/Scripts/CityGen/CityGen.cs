@@ -12,7 +12,8 @@ public class CityGen
     // This determins the level of randomization in roadnetworks and how building are placed.
     [Range(0.0f, 1.0f)]
     public float randomizationFactor;
-    public int NrBranches;
+    public int nrBranches;
+    public float minBlockWidth;
     public Vector3 genPoint;
 
     private List<City> cities = new List<City>();
@@ -22,7 +23,7 @@ public class CityGen
 
     public void Start()
     {
-        if (NrBranches < 1)
+        if (nrBranches < 1)
             Debug.Log("Cannot generate city with no branches (Nr Branches > 0)!");
         if (genPoint == null)
             Debug.Log("Can't generate city with no point/position");
