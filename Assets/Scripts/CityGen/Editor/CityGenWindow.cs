@@ -6,16 +6,24 @@ using UnityEditor;
 
 public class CityGenWindow : EditorWindow
 {
-    public static readonly Color splitterColor = new Color(130.0f / 256.0f, 130.0f / 256.0f, 130.0f / 256.0f, 1.0f);
     private float separation = 10.0f;
 
-	[MenuItem("Window/City Gen")]
-    static void Init()
+    CityGen generator = new CityGen();
+    private bool saved { get; set; } = true;
+
+    private void Awake()
     {
-        // Get existing open window or if none, make a new one:
-        CityGenWindow window = EditorWindow.GetWindow<CityGenWindow>();
-        window.titleContent.text = "City Gen";
-        window.Show();
+        this.generator.Start();
+    }
+
+    private void Update()
+    {
+        this.generator.Update();
+    }
+
+    private void OnFocus()
+    {
+        this.generator.OnFocus();
     }
 
     private void OnGUI()
@@ -85,6 +93,16 @@ public class CityGenWindow : EditorWindow
             content();
         }
         GUILayout.EndArea();
+    }
+
+    // Static Initiation function
+    [MenuItem("Window/City Gen")]
+    static void ShowWindow()
+    {
+        // Get existing open window or if none, make a new one:
+        CityGenWindow window = EditorWindow.GetWindow<CityGenWindow>();
+        window.titleContent.text = "City Gen";
+        window.Show();
     }
 }
 

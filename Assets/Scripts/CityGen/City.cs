@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class City : MonoBehaviour {
+public class BaseCity
+{
+    protected int id;
+}
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+public class City : BaseCity
+{
+    public City(int id)
+    {
+        this.id = id;
+    }
 }
