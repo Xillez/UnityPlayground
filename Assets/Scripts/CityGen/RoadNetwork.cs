@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class RoadNetwork
 {
-    //float minBlockWidth = 0.01f;
     private int nrBranches;
-    List<RoadSegment> segments = new List<RoadSegment>();
+    private List<RoadSegment> segments = new List<RoadSegment>();
 
     public void AddRoadSegment(RoadSegment segment)
     {
@@ -14,18 +13,20 @@ public class RoadNetwork
             this.segments.Add(segment);
     }
 
-    public void SubdivideRoads(int iterations)
+    public int getNrSegments()
     {
-        for (int i = iterations; i >= 0; i--)
-            for (int seg = 0; seg < this.segments.Count; seg++)
-            {
-                float random = Random.Range(0.4f, 0.6f);   // Random distance from generation point in percent. Used for subdivision.
-                Vector3 oldSegmentDirection = this.segments[i].end - this.segments[i].start;
-                Mathf.Tan(((360.0f / nrBranches) / 2.0f) * Mathf.Deg2Rad) * Vector3.Magnitude(oldSegmentDirection * random);
-                //float randomLength = Random.Range();
-                Vector3 newSegmentDirection = Vector3.Cross(oldSegmentDirection, Vector3.up) * Random.Range()
-                Vector3 newSegmentStart = (oldSegmentDirection * random) + (newSegmentDirection * Random.Range(0.3f, 0.7f));
-                RoadSegment newSegment;
-            }
+        return this.segments.Count;
+    }
+
+    public int getNrBranches()
+    {
+        return this.segments.Count;
+    }
+
+    public RoadSegment getSegment(int index)
+    {
+        if (index >= 0 && index < this.segments.Count)
+            return this.segments[i];
+        return null;
     }
 }

@@ -15,6 +15,7 @@ public class CityGen
     public int nrBranches;
     public float minBlockWidth;
     public Vector3 genPoint;
+    public float cityRadius;
 
     private List<City> cities = new List<City>();
     private int cityLoaded = -1;

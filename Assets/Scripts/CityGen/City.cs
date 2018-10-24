@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseCity
+public class City
 {
     protected int id;
-}
 
-public class City : BaseCity
-{
     public City(int id)
     {
         this.id = id;
