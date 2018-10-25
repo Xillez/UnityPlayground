@@ -10,7 +10,12 @@ public class RoadNetworkGenerator
     //float minBlockWidth = 0.01f;
     private int nrBranches;
 
-    public RoadNetworkGenerator(Vector3 genPoint, float radius, int nrBranches)
+    public RoadNetworkGenerator()
+    {   
+        //
+    }
+
+    public void Init(Vector3 genPoint, float radius, int nrBranches)
     {
         this.genPoint = genPoint;
         this.cityRadius = radius;

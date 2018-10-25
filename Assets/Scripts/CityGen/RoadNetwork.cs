@@ -26,7 +26,7 @@ public class RoadNetwork
     public RoadSegment getSegment(int index)
     {
         if (index >= 0 && index < this.segments.Count)
-            return this.segments[i];
+            return this.segments[index];
         return null;
     }
 }

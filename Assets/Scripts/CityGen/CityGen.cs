@@ -28,6 +28,10 @@ public class CityGen
             Debug.Log("Cannot generate city with no branches (Nr Branches > 0)!");
         if (genPoint == null)
             Debug.Log("Can't generate city with no point/position");
+        if (cityRadius < 0.01f)
+            Debug.Log("City radius too small!");
+
+        roadGen.Init(this.genPoint, this.cityRadius, this.nrBranches);
     }
 
     public void Update()
