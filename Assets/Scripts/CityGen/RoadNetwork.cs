@@ -13,6 +13,12 @@ public class RoadNetwork
             this.segments.Add(segment);
     }
 
+    public void Draw()
+    {
+        for (int i = 0; i < this.segments.Count; i++)
+            Debug.DrawLine(this.segments[i].start, this.segments[i].end);
+    }
+
     public int getNrSegments()
     {
         return this.segments.Count;

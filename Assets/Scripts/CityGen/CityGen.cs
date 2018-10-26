@@ -10,28 +10,30 @@ public class CityGen
     private int nextCityId = 0;
         
     // This determins the level of randomization in roadnetworks and how building are placed.
-    [Range(0.0f, 1.0f)]
-    public float randomizationFactor;
-    public int nrBranches;
+    /*[Range(0.0f, 1.0f)]
+    public float randomizationFactor;*/
+    public int nrBranches = 6;
     public float minBlockWidth;
-    public Vector3 genPoint;
-    public float cityRadius;
+    public Vector3 genPoint = Vector3.zero;
+    public float cityRadius = 10.0f;
 
     private List<City> cities = new List<City>();
     private int cityLoaded = -1;
+    RoadNetwork network = new RoadNetwork();
     private RoadNetworkGenerator roadGen = new RoadNetworkGenerator();
     private AssetManager assetMgr = new AssetManager();
 
     public void Start()
     {
-        if (nrBranches < 1)
+        if (this.nrBranches < 1)
             Debug.Log("Cannot generate city with no branches (Nr Branches > 0)!");
-        if (genPoint == null)
+        if (this.genPoint == null)
             Debug.Log("Can't generate city with no point/position");
-        if (cityRadius < 0.01f)
+        if (this.cityRadius < 0.01f)
             Debug.Log("City radius too small!");
 
         roadGen.Init(this.genPoint, this.cityRadius, this.nrBranches);
+        roadGen.GenRoadNetworkBaseSegments(ref this.network);       
     }
 
     public void Update()
@@ -57,5 +59,10 @@ public class CityGen
     public void GenerateCity()
     {
         //
+    }
+
+    public void DrawCity()
+    {
+        network.Draw();
     }
 }

@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class BaseRoadSegment
+public class RoadSegment
 {
     protected int id;
-}
-
-public class RoadSegment : BaseRoadSegment
-{
     public Vector3 start;
     public Vector3 end;
     public float width;
@@ -19,6 +15,16 @@ public class RoadSegment : BaseRoadSegment
         this.id = id;
         this.start = start;
         this.end = end;
+    }
+
+    public float Length()
+    {
+        return (end - start).magnitude;
+    }
+
+    public Vector3 Direction()
+    {
+        return (end - start);
     }
 
     public bool Equals(RoadSegment other)

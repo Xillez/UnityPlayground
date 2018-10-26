@@ -25,10 +25,15 @@ public class RoadNetworkGenerator
     public void GenRoadNetworkBaseSegments(ref RoadNetwork network)
     {
         int nrBaseSegments = Random.Range(3, 7);
-        float randomDistance = Random.Range(0.3f, 1.0f);
-        for (int i = 0; i < nrBaseSegments; i++)
+        for (int i = 0; i < this.nrBranches; i++)
         {
-            RoadSegment road = new RoadSegment(nrBranches++, Vector3.zero, Vector3.zero);
+            Vector3 start = new Vector3(this.genPoint.x + this.cityRadius * Mathf.Cos((i * (360.0f / (float)this.nrBranches)) * Mathf.Deg2Rad),
+                                        this.genPoint.y, 
+                                        this.genPoint.z + this.cityRadius * Mathf.Sin((i * (360.0f / (float)this.nrBranches)) * Mathf.Deg2Rad));
+            Vector3 end = new Vector3(this.genPoint.x + this.cityRadius * Mathf.Cos(((i + 1) * (360.0f / (float)this.nrBranches)) * Mathf.Deg2Rad),
+                                      this.genPoint.y, 
+                                      this.genPoint.z + this.cityRadius * Mathf.Sin(((i + 1) * (360.0f / (float)this.nrBranches)) * Mathf.Deg2Rad));
+            network.AddRoadSegment(new RoadSegment(this.nrBranches++, start, end));
         }
     }
 
@@ -39,7 +44,9 @@ public class RoadNetworkGenerator
             {
                 float random = Random.Range(0.4f, 0.6f);   // Random distance from generation point in percent. Used for subdivision.
                 RoadSegment segment = network.getSegment(i);
-                Vector3 oldSegmentDirection = segment.end - segment.start;
+                Vector3 newSegmentStart = Vector3.Cross((segment.Direction() * Random.Range(0.5f, 1.0f)), Vector3.up) + (segment.Direction() * random);
+                Vector3 newSegmentEnd = (-newSegmentStart) * Random.Range(0.5f, 1.0f);
+
 
                 /*Mathf.Tan(((360.0f / nrBranches) / 2.0f) * Mathf.Deg2Rad) * Vector3.Magnitude(oldSegmentDirection * random);
                 //float randomLength = Random.Range();

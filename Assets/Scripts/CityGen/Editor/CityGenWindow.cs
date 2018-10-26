@@ -69,6 +69,10 @@ public class CityGenWindow : EditorWindow
         {
             GUILayout.Button("TODO:");
             GUILayout.TextField("Add inspector like city settings screen, where user can edit city properties");
+            if (GUILayout.Button("Draw"))
+            {
+                generator.DrawCity();
+            }
         });
     }
 
