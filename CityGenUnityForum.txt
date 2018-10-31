@@ -1,0 +1,6 @@
+Title: 
+Unity Editor freezes once EditorWindow opens
+Text:
+Hey, I have a problem with a custom Editor Window window (code below).
+
+Previously it's been working perfectly fine with no problems what so ever, but recently the editor window, once tried to open, will freeze unity completely. Nothing of the code in the editor window runs, neither does the window it self pop up. I tried to do some debug printing to see what happens but no printing occurs and I've tried searching a bit but nothing that worked, there seems to be a missing link from looking at the editor.log
