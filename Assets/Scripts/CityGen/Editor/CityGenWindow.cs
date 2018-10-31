@@ -11,22 +11,22 @@ public class CityGenWindow : EditorWindow
     CityGen generator = new CityGen();
     private bool saved { get; set; } = true;
 
-    private void Awake()
+    public void Awake()
     {
         this.generator.Start();
     }
 
-    private void Update()
+    public void Update()
     {
         this.generator.Update();
     }
 
-    private void OnFocus()
+    public void OnFocus()
     {
         this.generator.OnFocus();
     }
 
-    private void OnGUI()
+    public void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
         {
@@ -101,11 +101,15 @@ public class CityGenWindow : EditorWindow
 
     // Static Initiation function
     [MenuItem("Window/City Gen")]
-    static void ShowWindow()
+    public static void Init()
     {
+        Debug.Log("[CityGenWindow]: Init() - entry");
         // Get existing open window or if none, make a new one:
-        CityGenWindow window = EditorWindow.GetWindow<CityGenWindow>();
+        Debug.Log("[CityGenWindow]: Init() - Window creation");
+        CityGenWindow window = (CityGenWindow) EditorWindow.GetWindow<CityGenWindow>();
+        Debug.Log("[CityGenWindow]: Init() - Window title setting");
         window.titleContent.text = "City Gen";
+        Debug.Log("[CityGenWindow]: Init() - Window displaying");
         window.Show();
     }
 }

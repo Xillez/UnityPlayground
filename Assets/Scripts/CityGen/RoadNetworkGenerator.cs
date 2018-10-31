@@ -17,6 +17,7 @@ public class RoadNetworkGenerator
 
     public void Init(Vector3 genPoint, float radius, int nrBranches)
     {
+        Debug.Log("[" + this.GetType().Name + "]: Init() - entry");
         this.genPoint = genPoint;
         this.cityRadius = radius;
         this.nrBranches = nrBranches;
@@ -24,26 +25,35 @@ public class RoadNetworkGenerator
 
     public void GenRoadNetworkBaseSegments(ref RoadNetwork network)
     {
-        int nrBaseSegments = Random.Range(3, 7);
+        Debug.Log("[" + this.GetType().Name + "]: GenRoadNetwork() - entry");
+        //int nrBaseSegments = Random.Range(3, 7);
+        float intervalRadians = (360.0f / this.nrBranches) * Mathf.Deg2Rad;
         for (int i = 0; i < this.nrBranches; i++)
         {
-            Vector3 start = new Vector3(this.genPoint.x + this.cityRadius * Mathf.Cos((i * (360.0f / (float)this.nrBranches)) * Mathf.Deg2Rad),
+            Vector3 start = new Vector3(this.genPoint.x + this.cityRadius * Mathf.Cos(i * intervalRadians),
                                         this.genPoint.y, 
-                                        this.genPoint.z + this.cityRadius * Mathf.Sin((i * (360.0f / (float)this.nrBranches)) * Mathf.Deg2Rad));
-            Vector3 end = new Vector3(this.genPoint.x + this.cityRadius * Mathf.Cos(((i + 1) * (360.0f / (float)this.nrBranches)) * Mathf.Deg2Rad),
+                                        this.genPoint.z + this.cityRadius * Mathf.Sin(i * intervalRadians));
+            Vector3 end = new Vector3(this.genPoint.x + this.cityRadius * Mathf.Cos((i + 1) * intervalRadians),
                                       this.genPoint.y, 
-                                      this.genPoint.z + this.cityRadius * Mathf.Sin(((i + 1) * (360.0f / (float)this.nrBranches)) * Mathf.Deg2Rad));
+                                      this.genPoint.z + this.cityRadius * Mathf.Sin((i + 1) * intervalRadians));
             network.AddRoadSegment(new RoadSegment(this.nrBranches++, start, end));
+
+                                    /*new Vector3(Mathf.Cos(i) * radius + pos.x, 
+                                                pos.y, 
+                                                Mathf.Sin(i) * radius + pos.z), 
+                                    new Vector3(Mathf.Cos(i + 0.015f) * radius + pos.x, 
+                                                pos.y, 
+                                                Mathf.Sin(i + 0.015f) * radius + pos.z)*/
         }
     }
 
     public void SubdivideRoads(ref RoadNetwork network, int iterations)
     {
-        for (int i = iterations; i >= 0; i--)
-            for (int seg = 0; seg < network.getNrSegments(); seg++)
+        /*for (int i = iterations; i >= 0; i--)
+            for (int seg = 0; seg < network.GetNrSegments(); seg++)
             {
                 float random = Random.Range(0.4f, 0.6f);   // Random distance from generation point in percent. Used for subdivision.
-                RoadSegment segment = network.getSegment(i);
+                RoadSegment segment = network.GetSegment(i);
                 Vector3 newSegmentStart = Vector3.Cross((segment.Direction() * Random.Range(0.5f, 1.0f)), Vector3.up) + (segment.Direction() * random);
                 Vector3 newSegmentEnd = (-newSegmentStart) * Random.Range(0.5f, 1.0f);
 
@@ -52,7 +62,7 @@ public class RoadNetworkGenerator
                 //float randomLength = Random.Range();
                 Vector3 newSegmentDirection = Vector3.Cross(oldSegmentDirection, Vector3.up) * Random.Range()
                 Vector3 newSegmentStart = (oldSegmentDirection * random) + (newSegmentDirection * Random.Range(0.3f, 0.7f));
-                RoadSegment newSegment;*/
-            }
+                RoadSegment newSegment;*
+            }*/
     }
 }
