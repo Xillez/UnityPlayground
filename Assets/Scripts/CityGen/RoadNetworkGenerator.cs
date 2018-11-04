@@ -17,7 +17,6 @@ public class RoadNetworkGenerator
 
     public void Init(Vector3 genPoint, float radius, int nrBranches)
     {
-        Debug.Log("[" + this.GetType().Name + "]: Init() - entry");
         this.genPoint = genPoint;
         this.cityRadius = radius;
         this.nrBranches = nrBranches;
@@ -25,7 +24,6 @@ public class RoadNetworkGenerator
 
     public void GenRoadNetworkBaseSegments(ref RoadNetwork network)
     {
-        Debug.Log("[" + this.GetType().Name + "]: GenRoadNetwork() - entry");
         //int nrBaseSegments = Random.Range(3, 7);
         float intervalRadians = (360.0f / this.nrBranches) * Mathf.Deg2Rad;
         for (int i = 0; i < this.nrBranches; i++)
@@ -36,7 +34,7 @@ public class RoadNetworkGenerator
             Vector3 end = new Vector3(this.genPoint.x + this.cityRadius * Mathf.Cos((i + 1) * intervalRadians),
                                       this.genPoint.y, 
                                       this.genPoint.z + this.cityRadius * Mathf.Sin((i + 1) * intervalRadians));
-            network.AddRoadSegment(new RoadSegment(this.nrBranches++, start, end));
+            network.AddRoadSegment(new RoadSegment(i, start, end));
 
                                     /*new Vector3(Mathf.Cos(i) * radius + pos.x, 
                                                 pos.y, 
