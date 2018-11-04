@@ -12,7 +12,8 @@ public class CityGen
     // This determins the level of randomization in roadnetworks and how building are placed.
     /*[Range(0.0f, 1.0f)]
     public float randomizationFactor;*/
-    public int nrBranches = 6;
+    public int nrBranches = 5;
+    public int nrIterations = 4;
     public float minBlockWidth;
     public Vector3 genPoint;
     public float cityRadius = 10.0f;
@@ -33,10 +34,9 @@ public class CityGen
         if (this.cityRadius < 0.01f)
             Debug.Log("City radius too small!");
 
-        Debug.Log("[" + this.GetType().Name + "]: Start() - roadGen.Init()");
         roadGen.Init(this.genPoint, this.cityRadius, this.nrBranches);
-        Debug.Log("[" + this.GetType().Name + "]: Start() - roadGen.GenRoadNetwork()");
-        roadGen.GenRoadNetworkBaseSegments(ref this.network);       
+        roadGen.GenRoadNetworkBaseSegments(ref this.network);
+        roadGen.SubdivideRoads(ref network, this.nrIterations);
     }
 
     public void Update()
@@ -66,7 +66,6 @@ public class CityGen
 
     public void DrawCity()
     {
-        Debug.Log("[" + this.GetType().Name + "]: DrawCity() - network.Draw()");
         network.Draw();
     }
 }

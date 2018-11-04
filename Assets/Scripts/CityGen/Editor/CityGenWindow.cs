@@ -103,13 +103,9 @@ public class CityGenWindow : EditorWindow
     [MenuItem("Window/City Gen")]
     public static void Init()
     {
-        Debug.Log("[CityGenWindow]: Init() - entry");
         // Get existing open window or if none, make a new one:
-        Debug.Log("[CityGenWindow]: Init() - Window creation");
         CityGenWindow window = (CityGenWindow) EditorWindow.GetWindow<CityGenWindow>();
-        Debug.Log("[CityGenWindow]: Init() - Window title setting");
         window.titleContent.text = "City Gen";
-        Debug.Log("[CityGenWindow]: Init() - Window displaying");
         window.Show();
     }
 }
