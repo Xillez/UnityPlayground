@@ -9,8 +9,8 @@ public class RoadNetwork
 
     public void AddRoadSegment(RoadSegment segment)
     {
-        if (!this.segments.Contains(segment))
-            this.segments.Add(segment);
+        //if (!this.segments.Contains(segment))
+        this.segments.Add(segment);
     }
 
     public void Draw()
