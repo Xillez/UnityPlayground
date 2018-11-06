@@ -12,8 +12,8 @@ public class CityGen
     // This determins the level of randomization in roadnetworks and how building are placed.
     /*[Range(0.0f, 1.0f)]
     public float randomizationFactor;*/
-    public int nrBranches = 5;
-    public int nrIterations = 4;
+    public int nrBranches = 4;
+    public int nrIterations = 12;
     public float minBlockWidth;
     public Vector3 genPoint;
     public float cityRadius = 10.0f;
