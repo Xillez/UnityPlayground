@@ -8,22 +8,22 @@ public class CityGenWindow : EditorWindow
 {
     private float separation = 10.0f;
 
-    CityGen generator = new CityGen();
+    CityGen cityGen = new CityGen();
     private bool saved { get; set; } = true;
 
     public void Awake()
     {
-        this.generator.Start();
+        this.cityGen.Start();
     }
 
     public void Update()
     {
-        this.generator.Update();
+        this.cityGen.Update();
     }
 
     public void OnFocus()
     {
-        this.generator.OnFocus();
+        this.cityGen.OnFocus();
     }
 
     public void OnGUI()
@@ -71,7 +71,7 @@ public class CityGenWindow : EditorWindow
             GUILayout.TextField("Add inspector like city settings screen, where user can edit city properties");
             if (GUILayout.Button("Draw"))
             {
-                generator.DrawCity();
+                cityGen.DrawCity();
             }
         });
     }
