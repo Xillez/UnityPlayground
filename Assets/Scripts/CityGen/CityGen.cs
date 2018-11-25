@@ -13,7 +13,7 @@ public class CityGen
     /*[Range(0.0f, 1.0f)]
     public float randomizationFactor;*/
     public int nrBranches = 4;
-    public int nrIterations = 12;
+    public int nrIterations = 1;
     public float minBlockWidth;
     public Vector3 genPoint;
     public float cityRadius = 10.0f;

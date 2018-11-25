@@ -55,13 +55,15 @@ public class RoadNetworkGenerator
         {
             // Make a temporary list to avoid infinite loop
             List<RoadSegment> temp = new List<RoadSegment>();
-            // Make new perpendicular segments from 
-            for (int seg = 0; seg < network.GetNrSegments(); seg++)
-            {
+            // Make new perpendicular segments from a random segment
+            /*for (int seg = 0; seg < network.GetNrSegments(); seg++)
+            {*/
+                int seg = Random.Range(0, network.GetNrSegments() - 1);
+            Debug.Log(seg);
                 // Find a random distance to generate
                 float randomDist = Random.Range(0.3f, 0.7f);   // Random distance from segment start point in percent. Used for subdivision.
-                RoadSegment segment = network.GetSegment(i);
-                Vector3 newSegmentStart = Vector3.Cross((segment.Direction()), Vector3.up) * Random.Range(0.4f, 0.9f); // + (segment.Direction() * randomDist);
+                RoadSegment oldSegment = network.GetSegment(seg);
+                Vector3 newSegmentStart = oldSegment.start + Vector3.Cross((oldSegment.Direction()), Vector3.up) * Random.Range(0.4f, 0.9f); // + (segment.Direction() * randomDist);
                 Vector3 newSegmentEnd = (-newSegmentStart) * Random.Range(1.5f, 2.0f);
                 temp.Add(new RoadSegment(newSegmentStart, newSegmentEnd));
 
@@ -71,8 +73,9 @@ public class RoadNetworkGenerator
                 Vector3 newSegmentDirection = Vector3.Cross(oldSegmentDirection, Vector3.up) * Random.Range()
                 Vector3 newSegmentStart = (oldSegmentDirection * random) + (newSegmentDirection * Random.Range(0.3f, 0.7f));
                 RoadSegment newSegment;*/
-            }
+            //}
 
+            // Add all cross roads after to avoid infinite loop
             foreach (RoadSegment segment in temp)
                 network.AddRoadSegment(segment);
         }
