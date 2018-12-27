@@ -1,4 +1,6 @@
 .vscode/
+ProjectSettings/ProjectVersion.txt
+
 # Created by https://www.gitignore.io/api/linux,unity,windows,sublimetext,visualstudio,visualstudiocode
 
 ### Linux ###
