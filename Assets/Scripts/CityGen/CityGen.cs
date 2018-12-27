@@ -8,12 +8,17 @@ public class CityGen
     // Follow this: http://cybercritics-critic.blogspot.com/2015/08/procedural-city-generation-in-unity3d.html
 
     private int nextCityId = 0;
+
+    /*
+        TODO: 
+        - Move all city relevant variables to city and add setters there. (nrBranches, nrIterations, minBlockWidth, genPoint, cityRadius)
+    */
         
     // This determins the level of randomization in roadnetworks and how building are placed.
     /*[Range(0.0f, 1.0f)]
     public float randomizationFactor;*/
-    public int nrBranches = 5;
-    public int nrIterations = 4;
+    public int nrBranches = 4;
+    public int nrIterations = 50;
     public float minBlockWidth = 0.1f;
     public Vector3 genPoint;
     public float cityRadius = 10.0f;
