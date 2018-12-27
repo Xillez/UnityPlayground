@@ -39,7 +39,6 @@ public class CityGenWindow : EditorWindow
         EditorGUILayout.EndHorizontal();
         MakeSplitter(new Rect(Vector2.zero.x, (this.position.height * 0.5f) - (separation / 2.0f), this.position.width, separation));
         MakeCityAssetsManager(new Rect(Vector2.zero.x, (this.position.height * 0.5f) + (separation / 2.0f), this.position.width, (this.position.height * 0.5f) - (separation / 2.0f)));
-        
     }
 
     private void MakeCitySelectionMenu(Rect rect)
