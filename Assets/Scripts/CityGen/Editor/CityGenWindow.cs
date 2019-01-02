@@ -1,29 +1,38 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 
 public class CityGenWindow : EditorWindow
 {
     private float separation = 10.0f;
 
-    CityGen cityGen = new CityGen();
+    Scene currentScene;
+    GameObject cityWell = null;
+    CityGen cityGen;// = new CityGen();
     private bool saved { get; set; } = true;
 
     public void Awake()
     {
-        this.cityGen.Start();
+        this.SetupSceneEnvironment();
+
+        if (cityGen != null)
+            this.cityGen.Start();
     }
 
     public void Update()
     {
-        this.cityGen.Update();
+        if (cityGen != null)
+            this.cityGen.Update();
     }
 
     public void OnFocus()
     {
-        this.cityGen.OnFocus();
+        if (cityGen != null)
+            this.cityGen.OnFocus();
     }
 
     public void OnGUI()
@@ -45,11 +54,20 @@ public class CityGenWindow : EditorWindow
     {
         MakeSection(rect, () =>
         {
-            GUILayout.BeginScrollView(Vector2.zero);
+            GUILayout.BeginVertical();
             {
-                GUILayout.TextField("Add buttons for loading and creating cities here!");
+                Color oldColor = GUI.backgroundColor;
+                GUI.backgroundColor = Color.blue;
+                //GUILayout.Button("fuck you!");
+                GUILayout.Label("Active scene: " + this.currentScene.name);
+                GUI.backgroundColor = oldColor;
+                GUILayout.BeginScrollView(Vector2.zero);
+                {
+                    GUILayout.TextField("Add buttons for loading and creating cities here!");
+                }
+                GUILayout.EndScrollView();
             }
-            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
         });
     }
 
@@ -70,7 +88,8 @@ public class CityGenWindow : EditorWindow
             GUILayout.TextField("Add inspector like city settings screen, where user can edit city properties");
             if (GUILayout.Button("Draw"))
             {
-                cityGen.DrawCity();
+                if (cityGen != null)
+                    cityGen.DrawCity();
             }
         });
     }
@@ -106,6 +125,33 @@ public class CityGenWindow : EditorWindow
         CityGenWindow window = (CityGenWindow) EditorWindow.GetWindow<CityGenWindow>();
         window.titleContent.text = "City Gen";
         window.Show();
+    }
+
+    public void SetupSceneEnvironment()
+    {
+        // Get the active scene.
+        this.currentScene = SceneManager.GetActiveScene();
+
+        // Set all root objects in the scene.
+        foreach (GameObject gameObject in this.currentScene.GetRootGameObjects().ToList())
+        {
+            // Find gameobject named "Cities"
+            if (gameObject.name != "Cities")
+                continue;
+
+            // Found it! Save it!
+            this.cityWell = gameObject;
+            break;                          // Stop.
+        }
+        
+        // "Cities" gameobject not found. Create it.
+        if(!this.cityWell)
+        {
+            this.cityWell = new GameObject("Cities");
+            this.cityWell.transform.position = Vector3.zero;
+        }
+
+        cityGen = this.cityWell.GetComponent<CityGen>();
     }
 }
 

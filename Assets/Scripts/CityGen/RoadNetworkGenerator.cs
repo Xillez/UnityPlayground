@@ -69,8 +69,9 @@ public class RoadNetworkGenerator
             Vector3 newSegmentStart = oldSegment.start + ((genPoint - oldSegment.start) / baseDist);
             Vector3 newSegmentEnd = oldSegment.start + ((oldSegment.end - genPoint) / baseDist);*/
 
-            float random = Random.Range(0.5f, 1.5f);
-            Vector3 newSegMidPoint = oldSegment.start + ((oldSegment.end - oldSegment.start) / 2.0f) + Vector3.Cross((oldSegment.end - oldSegment.start), Vector3.up).normalized * minBlockWidth;
+            Vector3 newSegMidPoint = oldSegment.start + ((oldSegment.end - oldSegment.start) / Random.Range(1.5f, 2.5f));
+            Vector3 newSegStart = newSegMidPoint + Vector3.Cross((oldSegment.end - oldSegment.start), ((Random.Range(0.0f, 1.0f) < 0.5f) ? Vector3.up : Vector3.down)).normalized * Random.Range(minBlockWidth, 3.0f);
+            Vector3 newSegEnd = newSegMidPoint + (newSegMidPoint - newSegStart) * 2.0f;
 
             // Pick whether start or end should be pushed (40% for both, 20% none).
             //float randomValue = Random.Range(0.0f, 1.0f);
@@ -82,7 +83,7 @@ public class RoadNetworkGenerator
                 newSegmentEnd += -(newSegmentEnd - newSegmentStart) * randomStrech;*/
 
             // Add it in for selection.
-            network.AddRoadSegment(new RoadSegment(newSegmentStart, newSegmentEnd, parentIndex));
+            network.AddRoadSegment(new RoadSegment(newSegStart, newSegEnd, parentIndex));
         }
     }
 }

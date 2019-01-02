@@ -8,7 +8,8 @@ public class RoadSegment
     public Vector3 start;
     public Vector3 end;
     public float width;
-    int parentIndex;
+    private int parentIndex;
+    private int childrenCount = 0;
 
     public RoadSegment(Vector3 start, Vector3 end, int parent)
     {
