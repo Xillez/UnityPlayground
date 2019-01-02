@@ -15,8 +15,8 @@ public class RoadNetwork
 
     public void Draw()
     {
-        for (int i = 0; i < this.segments.Count; i++)
-            Debug.DrawLine(this.segments[i].start, this.segments[i].end);
+        foreach (RoadSegment segment in this.segments)
+            Debug.DrawLine(segment.start, segment.end);
     }
 
     public int GetNrSegments()
@@ -34,5 +34,10 @@ public class RoadNetwork
         if (index >= 0 && index < this.segments.Count)
             return this.segments[index];
         return null;
+    }
+
+    public void Clear()
+    {
+        this.segments.Clear();
     }
 }
