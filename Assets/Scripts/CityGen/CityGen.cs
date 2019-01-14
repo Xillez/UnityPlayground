@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+[ExecuteInEditMode]
 public class CityGen : MonoBehaviour
 {
+    #if UNITY_EDITOR
     // Follow this: http://cybercritics-critic.blogspot.com/2015/08/procedural-city-generation-in-unity3d.html
-
-    private int nextCityId = 0;
 
     /*
         TODO: 
         - Move all city relevant variables to city and add setters there. (nrBranches, nrIterations, minBlockWidth, genPoint, cityRadius)
     */
-        
+
     // This determins the level of randomization in roadnetworks and how building are placed.
     /*[Range(0.0f, 1.0f)]
     public float randomizationFactor;*/
@@ -23,8 +23,8 @@ public class CityGen : MonoBehaviour
     public Vector3 genPoint;
     public float cityRadius = 10.0f;
 
-    private List<City> cities = new List<City>();
-    //private int cityLoaded = -1;
+    public List<City> cities = new List<City>();
+    public int cityLoaded = -1;
     RoadNetwork network = new RoadNetwork();
     private RoadNetworkGenerator roadGen = new RoadNetworkGenerator();
     //private AssetManager assetMgr = new AssetManager();
@@ -44,12 +44,39 @@ public class CityGen : MonoBehaviour
         //
     }
 
-    public void NewCity()
+    public void NewCity(string name)
     {
-        this.cities.Add(new City(this.nextCityId++));
+        // No name written, abort addition.
+        if (name == "")
+            return;
+
+        // Found city in list.
+        bool found = false;
+        foreach (City city in this.cities)
+        {
+            found = found || (city.name == name);
+        }
+
+        // City not found. Add it.
+        if (!found)
+        {
+            this.cities.Add(new City(name));
+        }
+        else    // City was found. State so to user.
+        {
+            Debug.Log("City already exists: " + name);
+        }
     }
 
-    public void DeleteCity(int id)
+    public void LoadCity(int index)
+    {
+        if (index < 0 || index >= this.cities.Count)
+            return;
+
+        this.cityLoaded = index;
+    }
+
+    public void DeleteCity(string name)
     {
         //
     }
@@ -61,6 +88,7 @@ public class CityGen : MonoBehaviour
 
     public void DrawCity()
     {
+        Debug.Log("CityGen - DrawCity - Entry!");
         if (this.nrBranches < 1)
             Debug.Log("Cannot generate city with no branches (Nr Branches > 0)!");
         /*if (this.genPoint == null)
@@ -74,4 +102,5 @@ public class CityGen : MonoBehaviour
         network.Draw();
         network.Clear();
     }
+    #endif
 }

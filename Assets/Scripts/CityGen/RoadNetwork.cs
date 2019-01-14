@@ -15,8 +15,13 @@ public class RoadNetwork
 
     public void Draw()
     {
+        Debug.Log("Network - Draw - Entry!");
         foreach (RoadSegment segment in this.segments)
+        {
+            Debug.Log("Network - Draw - Drawing segments!");
             Debug.DrawLine(segment.start, segment.end);
+        }
+        Debug.Log("Network - Draw - Exit!");
     }
 
     public int GetNrSegments()
@@ -38,6 +43,8 @@ public class RoadNetwork
 
     public void Clear()
     {
+        Debug.Log("Network - Clear - Entry!");
         this.segments.Clear();
+        Debug.Log("Network - Clear - Exit!");
     }
 }

@@ -17,27 +17,34 @@ public class RoadNetworkGenerator
 
     public void Init(Vector3 genPoint, float radius, int nrBranches)
     {
+        Debug.Log("Generator - Init - Entry!");
         this.genPoint = genPoint;
         this.cityRadius = radius;
         this.nrBranches = nrBranches;
+        Debug.Log("Generator - Init - Exit!");
     }
 
     public void GenRoadNetworkBaseSegments(ref RoadNetwork network)
     {
+        Debug.Log("Generator - GenRoadNetworkBaseSegments - Entry!");
         //int nrBaseSegments = Random.Range(3, 7);
         float intervalRadians = (360.0f / this.nrBranches) * Mathf.Deg2Rad;
+        Debug.Log("Generator - GenRoadNetworkBaseSegments - Base segments generation!");
         // Generate mainroads
         for (int i = 0; i < this.nrBranches; i++)
         {
+            Debug.Log("Generator - GenRoadNetworkBaseSegments - Element generated (" + i + ")!");
             Vector3 end = new Vector3(this.genPoint.x + this.cityRadius * Mathf.Cos((i) * intervalRadians),
                                       this.genPoint.y,
                                       this.genPoint.z + this.cityRadius * Mathf.Sin((i) * intervalRadians));
             network.AddRoadSegment(new RoadSegment(this.genPoint, end, 0));
         }
 
+        Debug.Log("Generator - GenRoadNetworkBaseSegments - Base Cross road generation!");
         // Generate crossroads
         for (int i = 0; i < this.nrBranches; i++)
         {
+            Debug.Log("Generator - GenRoadNetworkBaseSegments - Cross road generated (" + i + ")!");
             Vector3 start = new Vector3(this.genPoint.x + (this.cityRadius / 2.0f) * Mathf.Cos((i + 0.5f) * (intervalRadians)),
                                         this.genPoint.y, 
                                         this.genPoint.z + (this.cityRadius / 2.0f) * Mathf.Sin((i + 0.5f) * intervalRadians));
@@ -46,13 +53,16 @@ public class RoadNetworkGenerator
                                       this.genPoint.z + (this.cityRadius / 2.0f) * Mathf.Sin((i + 1.5f) * intervalRadians));
             network.AddRoadSegment(new RoadSegment(start, end, i));
         }
+        Debug.Log("Generator - GenRoadNetworkBaseSegments - Exit!");
     }
 
     public void SubdivideRoads(ref RoadNetwork network, int iterations, float minBlockWidth)
     {
+        Debug.Log("Generator - SubdivideRoads - Entry!");
         // For every iteration
         for (int i = iterations; i >= 0; i--)
         {
+            Debug.Log("Generator - SubdivideRoads - Road generated (" + i + ")!");
             // Find parent
             int parentIndex = Random.Range(0, network.GetNrSegments() - 1);
 
@@ -84,6 +94,8 @@ public class RoadNetworkGenerator
 
             // Add it in for selection.
             network.AddRoadSegment(new RoadSegment(newSegStart, newSegEnd, parentIndex));
+
+            Debug.Log("Generator - SubdivideRoads - Exit!");
         }
     }
 }
