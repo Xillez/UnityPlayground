@@ -4,18 +4,47 @@ using UnityEngine;
 
 public class City
 {
-    public string name { get; set; } = "";
-    protected Vector3 genPoint { get; set; } = Vector3.zero;
-    protected float cityRadius { get; set; } = 10.0f;
-    protected int nrBranches { get; set; } = 4;
-    protected int nrIterations { get; set; } = 50;
-    protected float minBlockWidth { get; set; } = 0.1f;
+    // This determins the level of randomization in roadnetworks and how building are placed.
+    /*[Range(0.0f, 1.0f)]
+    public float randomizationFactor;*/
 
-    protected RoadNetwork network = new RoadNetwork();
+    public string name { get; set; } = "";
+    public Vector3 genPoint { get; set; } = Vector3.zero;
+    public float cityRadius { get; set; } = 10.0f;
+    public int nrBranches { get; set; } = 4;
+    public int nrIterations { get; set; } = 50;
+    public float minBlockWidth { get; set; } = 0.1f;
+
+    public RoadNetwork network = new RoadNetwork();
 
     public City(string name)
     {
         this.name = name;
+    }
+
+    public void Draw()
+    {
+        if (this.network == null)
+            return;
+
+        this.network.Draw();
+    }
+
+    public void Clear()
+    {
+        Reset();
+    }
+
+    public void Reset()
+    {
+        this.name = "";
+        this.genPoint = Vector3.zero;
+        this.cityRadius = 1.0f;
+        this.nrBranches = 4;
+        this.nrIterations = 50;
+        this.minBlockWidth = 0.1f;
+
+        this.network.Clear();
     }
 
     public bool Equals(City other)

@@ -133,7 +133,7 @@ public class CityGenWindow : EditorWindow
             //GUILayout.Button("TODO:");
             /*GUILayout.TextField("Add scene preview previewing the city to generate");*/
             GUI.DrawTexture(new Rect(0, 0, rect.width, rect.height), renderTexture);
-            //if (GUI.Button(new Rect(rect.max.x - (rect.size.x * 0.1f), rect.max.y - (rect.size.x * 0.1f), 10.0f, 10.0f), "" ))
+            //if (GUI.Button(new Rect(rect.max.x - (rect.size.x * 0.1f), rect.max.y - (rect.size.x * 0.1f), 10.0f, 10.0f), ""))
         });
     }
 
