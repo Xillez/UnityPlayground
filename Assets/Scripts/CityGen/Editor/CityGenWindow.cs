@@ -11,14 +11,15 @@ public class CityGenWindow : EditorWindow
 {
     private float separation = 10.0f;
 
-    Scene currentScene;
     GameObject cityWell = null;
     CityGen cityGen;// = new CityGen();
     private bool saved { get; set; } = true;
 
+    Scene currentScene;
     private GameObject cameraObj;
     private Camera camera;
     private RenderTexture renderTexture;
+    private Vector2 scrollPos;
     //private Rect cityPreviewRect;
 
     protected string newCityName = "";
@@ -41,6 +42,8 @@ public class CityGenWindow : EditorWindow
 
     public void Update()
     {
+        if (this.cityGen.cities.Count < 0) this.cityGen.cityLoaded = -1;
+
         if (cityGen != null)
             this.cityGen.Update();
 
@@ -55,6 +58,9 @@ public class CityGenWindow : EditorWindow
             this.camera.Render();
             this.camera.targetTexture = null;
         }
+
+        if (this.cityGen.ValidateCityGenState(false))
+            this.FocusCameraOnCity();
     }
 
     public void OnFocus()
@@ -88,47 +94,56 @@ public class CityGenWindow : EditorWindow
         GUIStyle sceneTitleColor = new GUIStyle();
         sceneTitleColor.normal.background = MakeUniformTex((int) rect.width, (int) rect.height, GUI.backgroundColor);
 
-        MakeSection(rect, () =>
+        this.MakeSection(rect, () =>
         {
-            GUILayout.BeginVertical();
+            this.MakeVertical(() =>
             {
                 EditorGUILayout.BeginVertical(sceneTitleColor);
                 {
                     GUILayout.Label("Active scene: " + this.currentScene.name);
                 }
                 EditorGUILayout.EndVertical();
-                GUILayout.BeginScrollView(Vector2.zero);
+                GUILayout.BeginScrollView(this.scrollPos);
                 {
                     // Make buttons for cities.
                     if (this.cityGen != null && this.cityGen.cities != null && this.cityGen.cities.Count > 0)
                         for (int i = 0; i < this.cityGen.cities.Count; i++)
-                            if (this.cityGen.cities[i] != null)
-                            {
-                                if (GUILayout.Button(this.cityGen.cities[i].name))//, ((this.cityGen.cityLoaded != i) ? new GUIStyle(GUI.skin.button) : buttonStyle)))
-                                    this.cityGen.LoadCity(i);
-                            }
-
-                    EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-                    //GUILayout.BeginHorizontal();
-                    {
-                        this.newCityName = EditorGUILayout.TextField("City name: ", this.newCityName);
-                        if (GUILayout.Button("Add city"))
                         {
-                            this.cityGen.NewCity(this.newCityName);
-                            this.newCityName = "";
+                            GUILayout.BeginHorizontal();
+                            {
+                                // Save old background color.
+                                Color oldColor = GUI.backgroundColor;
+                                // Set button color to green if loaded, old color if not.
+                                GUI.backgroundColor = ((this.cityGen.cityLoaded != i) ? oldColor : Color.green);
+                                if (GUILayout.Button(this.cityGen.cities[i].name) && this.cityGen.cities[i] != null)    // Load city if it exists.
+                                    this.cityGen.LoadCity(i);
+                                // Reset color
+                                GUI.backgroundColor = oldColor;
+
+                                // Add delete button.
+                                if (GUILayout.Button("Delete", GUILayout.ExpandWidth(false)) && this.cityGen.cities[i] != null)
+                                    this.cityGen.DeleteCity(i);
+                            }
+                            GUILayout.EndHorizontal();
                         }
+
+                    this.MakeSplitBar();
+
+                    this.newCityName = EditorGUILayout.TextField("City name: ", this.newCityName);
+                    if (GUILayout.Button("Add city"))
+                    {
+                        this.cityGen.NewCity(this.newCityName);
+                        this.newCityName = "";
                     }
-                    //GUILayout.EndHorizontal();
                 }
                 GUILayout.EndScrollView();
-            }
-            GUILayout.EndVertical();
+            });
         });
     }
 
     private void MakeCityScenePreview(Rect rect)
     {
-        MakeSection(rect, () =>
+        this.MakeSection(rect, () =>
         {
             //GUILayout.Button("TODO:");
             /*GUILayout.TextField("Add scene preview previewing the city to generate");*/
@@ -139,34 +154,65 @@ public class CityGenWindow : EditorWindow
 
     private void MakeCitySettings(Rect rect)
     {
-        MakeSection(rect, () =>
+        if (this.cityGen == null)
+            return;
+
+        this.MakeSection(rect, () =>
         {
             GUIStyle sceneTitleColor = new GUIStyle();
             sceneTitleColor.normal.background = MakeUniformTex((int)rect.width, (int)rect.height, GUI.backgroundColor);
-            GUILayout.BeginVertical();
+            this.MakeVertical(() =>
             {
-                GUILayout.Label("City loaded");
-            }
-            GUILayout.EndVertical();
-            //Debug.Log("MakeCitySettings! " + (cityGen != null));
-            GUILayout.Button("TODO:");
-            GUILayout.TextField("Add inspector like city settings screen, where user can edit city properties");
-            if (GUILayout.Button("Draw"))
-            {
+                GUILayout.Label("City loaded: " + ((this.cityGen != null && this.cityGen.ValidateCityGenState(false)) ? this.cityGen.cities[this.cityGen.cityLoaded].name : ""));
+            });
+            this.MakeSplitBar();
+            if (this.cityGen.cities.Count > 0 && this.cityGen.cityLoaded >= 0)
+                this.MakeVertical(() =>
+                {
+                    
+                    City loadedCity = new City(this.cityGen.cities[this.cityGen.cityLoaded]);
 
-                Debug.Log("CLICK! " + (cityGen == null));
-                if (cityGen == null)
-                    return;
+                    loadedCity.name = EditorGUILayout.TextField("City name: ", loadedCity.name);
+                    loadedCity.genPoint = EditorGUILayout.Vector3Field("Gen Point: ", loadedCity.genPoint);
+                    loadedCity.cityRadius = EditorGUILayout.FloatField("City radius: ", loadedCity.cityRadius);
+                    loadedCity.nrBranches = EditorGUILayout.IntField("Nr. Base branches: ", loadedCity.nrBranches);
+                    loadedCity.nrIterations = EditorGUILayout.IntField("Nr. iterations: ", loadedCity.nrIterations);
+                    //GUILayout.Label("NOTE! Min block width will be overruled if assets are physicaly larger!");
+                    //loadedCity.minBlockWidth = EditorGUILayout.FloatField("Min Block Width: ", loadedCity.minBlockWidth);
 
-                Debug.Log("DDDDDDDRRRRRAAAAWWWWW!!!!!!");
-                cityGen.DrawCity();
-            }
+                    /*
+                        TODO:
+                        - Add viewing for: public RoadNetwork network = new RoadNetwork();
+                    */
+
+                    this.cityGen.cities[this.cityGen.cityLoaded] = loadedCity;
+                    loadedCity = null;
+
+                    this.MakeButton("Generate!", () => {
+                        this.cityGen.GenerateCityBase();
+                    });
+                    
+
+                    //Debug.Log("MakeCitySettings! " + (cityGen != null));
+                    /*GUILayout.Button("TODO:");
+                    GUILayout.TextField("Add inspector like city settings screen, where user can edit city properties");
+                    if (GUILayout.Button("Draw"))
+                    {
+
+                        Debug.Log("CLICK! " + (cityGen == null));
+                        if (cityGen == null)
+                            return;
+
+                        Debug.Log("DDDDDDDRRRRRAAAAWWWWW!!!!!!");
+                        cityGen.DrawCity();
+                    }*/
+                });
         });
     }
 
     private void MakeCityAssetsManager(Rect rect)
     {
-        MakeSection(rect, () =>
+        this.MakeSection(rect, () =>
         {
             GUILayout.Button("TODO:");
             GUILayout.TextField("Add asset managment (like the tree addition on terrain tool)");
@@ -178,6 +224,12 @@ public class CityGenWindow : EditorWindow
         GUI.Box(rect, "");//, GUIStyle.none);
     }
 
+
+    private void MakeSplitBar()
+    {
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+    }
+
     private void MakeSection(Rect rect, Action content)
     {
         GUILayout.BeginArea(rect);
@@ -185,6 +237,15 @@ public class CityGenWindow : EditorWindow
             content();
         }
         GUILayout.EndArea();
+    }
+
+    private void MakeVertical(Action content)
+    {
+        GUILayout.BeginVertical();
+        {
+            content();
+        }
+        GUILayout.EndVertical();
     }
 
     private void MakeButton(string text, Action content)
@@ -243,6 +304,15 @@ public class CityGenWindow : EditorWindow
         this.camera = this.cameraObj.AddComponent<Camera>();
         // Set render texture.
         this.renderTexture = new RenderTexture((int) this.position.width, (int) this.position.height, (int) RenderTextureFormat.ARGB32);
+    }
+
+    public void FocusCameraOnCity()
+    {
+        if (this.cameraObj == null || this.camera == null)
+            return;
+
+        this.cameraObj.transform.position = this.cityGen.cities[this.cityGen.cityLoaded].genPoint + (new Vector3(0.0f, 1.0f, 1.0f) * this.cityGen.cities[this.cityGen.cityLoaded].cityRadius * 1.5f);
+        this.cameraObj.transform.LookAt(this.cityGen.cities[this.cityGen.cityLoaded].genPoint);
     }
 
     private Texture2D MakeUniformTex(int width, int height, Color col)

@@ -13,13 +13,23 @@ public class City
     public float cityRadius { get; set; } = 10.0f;
     public int nrBranches { get; set; } = 4;
     public int nrIterations { get; set; } = 50;
-    public float minBlockWidth { get; set; } = 0.1f;
+    //public float minBlockWidth { get; set; } = 0.1f;
 
     public RoadNetwork network = new RoadNetwork();
 
     public City(string name)
     {
         this.name = name;
+    }
+
+    public City(City other)
+    {
+        this.name = other.name;
+        this.genPoint = other.genPoint;
+        this.cityRadius = other.cityRadius;
+        this.nrBranches = other.nrBranches;
+        this.nrIterations = other.nrIterations;
+        //this.minBlockWidth = other.minBlockWidth;
     }
 
     public void Draw()
@@ -42,7 +52,7 @@ public class City
         this.cityRadius = 1.0f;
         this.nrBranches = 4;
         this.nrIterations = 50;
-        this.minBlockWidth = 0.1f;
+        //this.minBlockWidth = 0.1f;
 
         this.network.Clear();
     }
